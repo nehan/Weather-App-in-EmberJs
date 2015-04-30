@@ -1,0 +1,91 @@
+<div id="cities-list">
+    <ul>
+        {{#each city in controller}}
+        {{#if city.iscurrentcity}}
+                <li {{bind-attr class="city.is_day_is_night"}}>
+
+                    {{#link-to 'city' city.id class="anchor_view"}}
+                    <ul>
+
+                    <li class="city-info">
+                        <div class="time">
+                            {{time-formatter city.current_time city.offset}}
+                        </div>
+                        <div class="city-name">
+                            {{city.displayName}}
+                        </div>
+                    </li>
+                        <li class="temperature">{{temperature-formatter city.weather.currently.temperature useUSUnits}}° </li>
+                    </ul>
+                    {{/link-to}}
+
+               </li>
+        {{else}}
+            <li {{bind-attr class="city.is_day_is_night"}}>
+                {{#link-to 'city' city.id class="anchor_view"}}
+                    <ul>
+
+                        <li class="city-info">
+                   {{#if isEditing}}
+                            <div class="delete_div">
+
+                                    <li><button class="delbtn" {{action 'delete_city' city.id bubbles=false}}>-</button></li>
+                            </div>
+                                <div class="shift_left">
+                                    <div class="time">
+                                        {{time-formatter city.current_time city.offset}}
+                                    </div>
+                                    <div class="city-name">
+                                        {{city.displayName}}
+                                    </div>
+                                <div>
+                   {{else}}
+
+                                    <div class="time">
+                                        {{time-formatter city.current_time city.offset}}
+                                    </div>
+                                    <div class="city-name">
+                                        {{city.displayName}}
+                                    </div>
+                     {{/if}}
+
+                        </li>
+                        <li class="temperature">{{temperature-formatter city.weather.currently.temperature useUSUnits}}° </li>
+                    </ul>
+                {{/link-to}}
+            </li>
+            {{/if}}
+        {{/each}}
+    </ul>
+</div>
+
+<nav class="nav_main" id="nav_menu">
+
+
+<span>
+    <a {{action 'toggeltemp'}} class="celsius-or-fahrenheit">
+
+   {{#if useUSUnits}}
+          <span class="disable_CF">˚C</span>
+               ⁄
+           <span class="use-fahrenheit">˚F</span>
+    {{else}}
+       <span class="use-fahrenheit">˚C</span>
+       ⁄
+       <span class="disable_CF">˚F</span>
+   {{/if}}
+
+    </a>
+    <a class="attribution" href="http://forecast.io/" target="_blank">Powered by Forecast</a>
+
+            {{#if isEditing}}
+                <a class="edit-button" {{action 'done'}}>Done</a>
+            {{else}}
+                <a class="edit-button" {{action 'edit'}}>Edit</a>
+            {{/if}}
+
+            {{#link-to 'add' class="add-button"}}+{{/link-to}}
+
+ </span>
+</nav>
+

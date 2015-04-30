@@ -1,0 +1,14 @@
+<div class="form-group">
+
+    <div class="city_title"> Enter City, Zip Code, or Airport Location </div>
+    {{input type="text" value=searchText placeholder="Search..." class="newcity"}}
+    {{#link-to 'index' class="newcity_cancel"}} Cancel {{/link-to}}
+</div>
+<div>
+{{updateResults}}
+{{#each city in controller}}
+    <a href="" {{action 'add_city' city}}>
+      <li class="addcity">{{city.formatted_address}}</li>
+      </a>
+{{/each}}
+</div>

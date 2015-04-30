@@ -1,0 +1,129 @@
+<div {{bind-attr class="is_day_is_night"}}>
+<div id="city_weather" class="city-detail">
+    <section class="city-header">
+        <h2>{{displayName}}</h2>
+        <h4> {{weather.currently.summary}} </h4>
+        <h1> {{temperature-formatter weather.currently.temperature useUSUnits}}°</h1>
+    </section>
+    <section class="today">
+        <ul class="today-overview">
+            <li>{{week-day weather.currently.time weather.offset}}</li>
+            <li>Today</li>
+            <li>{{temperature-formatter weather.daily.data.0.temperatureMax useUSUnits}}°</li>
+            <li>{{temperature-formatter weather.daily.data.0.temperatureMin useUSUnits}}°</li>
+        </ul>
+        <div class="today-hourly-list-container">
+            <ul class="today-hourly-list" style="width: 1536px;">
+                <li><ul><li>Now</li>
+                <li>{{icon-name weather.hourly.data.0.icon}}</li>
+                <li> {{temperature-formatter weather.hourly.data.0.temperature useUSUnits}}˚</li></ul></li>
+            {{#each hour in hourly_data}}
+                <li><ul><li> {{hour-formatter hour.time weather.offset}}</li>
+                <li>{{icon-name hour.icon}}</li>
+                <li> {{temperature-formatter hour.temperature useUSUnits}}˚</li></ul></li>
+            {{/each}}
+
+            </ul>
+        </div>
+    </section>
+    <section class="forecast">
+        <ul class="forecast-list">
+          {{#each day in weather.daily.data}}
+            <li>
+            <ul>
+            <li> {{week-day day.time weather.offset}}</li>
+            <li> {{icon-name day.icon}} </li>
+                <li> {{temperature-formatter day.temperatureMax useUSUnits}}°</li>
+                <li> {{temperature-formatter day.temperatureMin useUSUnits}}°</li>
+                </ul>
+            </li>
+          {{/each}}
+        </ul>
+    </section>
+    <section class="today-details">
+        <p class="today-summary">Today: {{weather.daily.summary}}</p>
+        <ul class="today-details-list">
+            <li><ul> <li>Sunrise:</li>
+                <li> {{time-formatter weather.daily.data.0.sunriseTime weather.offset}}</li>
+            </ul> </li>
+            <li> <ul> <li>Sunset:</li>
+                <li> {{time-formatter weather.daily.data.0.sunsetTime weather.offset}}</li>
+            </ul> </li>
+            <li> </li>
+            <li> <ul> <li>Chance of Rain:</li>
+                <li> {{percent-formatter weather.daily.data.0.precipProbability}}%</li>
+            </ul> </li>
+            <li><ul><li>Humidity:</li>
+                <li> {{percent-formatter weather.currently.humidity}}%</li>
+            </ul> </li>
+            <li></li>
+            <li><ul> <li>Wind:</li>
+                <li> {{weather.currently.windBearing}} {{weather.currently.windSpeed}}mph</li>
+            </ul></li>
+            <li> <ul> <li>Feels like:</li>
+                <li>  {{temperature-formatter weather.currently.temperature useUSUnits}}˚</li>
+            </ul> </li>
+            <li> </li>
+            <li><ul> <li>Precipitation:</li>
+                <li> {{intensity-formatter weather.currently.precipIntensity}}
+                </li>
+            </ul> </li>
+            <li> <ul><li>Pressure:</li>
+                <li> {{pressure-formatter weather.currently.pressure}} in</li>
+            </ul> </li>
+            <li> </li>
+            <li> <ul> <li>Visibility:</li>
+                <li> {{weather.currently.visibility}}mi</li>
+            </ul> </li>
+     </ul>
+    </section>
+</div></div>
+<nav id="nav_menu" {{bind-attr class="is_day_is_night"}}>
+<span>
+    <a {{action 'toggeltemp'}} class="celsius-or-fahrenheit">
+
+        {{#if useUSUnits}}
+            <span class="disable_CF">˚C</span>
+            ⁄
+            <span class="use-fahrenheit">˚F</span>
+        {{else}}
+            <span class="use-fahrenheit">˚C</span>
+            ⁄
+            <span class="disable_CF">˚F</span>
+        {{/if}}
+
+    </a>
+ {{#if navNotEmpty}}
+    <div class="next-prev-nav">
+        <div class="prev-button">
+            {{#if isPrevDisable }}
+                    <a class="disabled">◀</a>
+            {{else}}
+            <a {{action 'get_previous_city'}}>◀</a>
+            {{/if}}
+        </div>
+       <div class="indicator-dots">
+
+
+    {{#each dot in controller.Dots}}
+
+        {{#if dot.current}}
+        <span class="indicator-dots-current">•</span>
+        {{else}}
+        <span class="indicator-dots-notcurrent">•</span>
+        {{/if}}
+     {{/each}}
+       </div>
+        <div class="next-button">
+           {{#if isNextDisable}}
+                   <a class="disabled">▶</a>
+           {{else}}
+                   <a {{action 'get_next_city'}}>▶</a>
+            {{/if}}
+        </div>
+    </div>
+    {{/if}}
+    {{#link-to 'index' class="list-button"}}☰{{/link-to}}
+
+ </span>
+</nav>
